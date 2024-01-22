@@ -1,0 +1,21 @@
+version: '3'
+
+services:
+ lab:
+   restart: always
+   build:
+     context: .
+     dockerfile: Dockerfile
+   environment:
+     PORT: "5000"
+   ports:
+     - "5000:8080"
+ db:
+   image: postgres:15.4-alpine3.18
+   restart: always
+   environment:
+      POSTGRES_USER: bckndlab_3_user
+      POSTGRES_DB: bckndlab_3
+      POSTGRES_PASSWORD: Qmsed6KCYRLtsAl9VVOoVWyYDoB3f3hr
+   ports:
+     - '5432:5432'
