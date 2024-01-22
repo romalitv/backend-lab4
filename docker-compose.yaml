@@ -7,9 +7,9 @@ services:
      context: .
      dockerfile: Dockerfile
    environment:
-     PORT: "5000"
+     PORT: "5001"
    ports:
-     - "5000:8080"
+     - "5001:8080"
  db:
    image: postgres:15.4-alpine3.18
    restart: always
