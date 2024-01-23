@@ -12,7 +12,7 @@ category_schema = CategorySchema()
 
 
 @blp_category.post("/category")
-@jwt_required
+@jwt_required()
 def create_category():
     category = request.json
 
