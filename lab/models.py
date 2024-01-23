@@ -7,6 +7,7 @@ class UserModel(db.Model):
 
     user_id = db.Column(db.String, primary_key=True)
     user_name = db.Column(db.String(128), unique=True, nullable=False)
+    user_password = db.Column(db.String(128), nullable=False)
 
     record = db.relationship("RecordModel", back_populates="user", lazy="dynamic")
     category = db.relationship("CategoryModel", back_populates="user")

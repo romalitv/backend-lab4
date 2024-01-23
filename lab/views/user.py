@@ -5,29 +5,44 @@ from flask_smorest import Blueprint
 from marshmallow import ValidationError
 from lab.models import UserModel, db
 from lab.entities import UserSchema
+from flask_jwt_extended import create_access_token, JWTManager, jwt_required, get_jwt_identity
+from passlib.hash import pbkdf2_sha256
 
 blp_user = Blueprint('user', __name__, description="Operations related to users")
 user_schema = UserSchema()
 
-@blp_user.post('/user')
+@blp_user.post('/register_user')
 def create_user():
     user = request.json
     try:
-        data = UserSchema().load(user)
+        data = user_schema.load(user)
     except ValidationError as e:
         return jsonify(e.messages), 400
 
     data['user_id'] = uuid.uuid4().hex
+    data['user_password'] = pbkdf2_sha256.hash(data['user_password'])
     user = UserModel(**data)
     try:
         db.session.add(user)
         db.session.commit()
-    except Exception :
+    except Exception:
         abort(400, message="failed creating user")
-
     return user_schema.dump(user)
 
+@blp_user.post('/login_user')
+def login_user():
+    user = request.json
+    try:
+        data = user_schema.load(user)
+    except ValidationError as e:
+        return jsonify(e.messages), 400
 
+    user = UserModel.query.filter_by(user_name=data['user_name']).first()
+    if user and pbkdf2_sha256.verify(data['user_password'], user.user_password):
+        access_token = create_access_token(identity=user.user_id)
+        return jsonify(access_token), 200
+    else:
+        abort(400, message="wrong name or password")
 
 
 @blp_user.get('/users')

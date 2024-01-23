@@ -1,3 +1,3 @@
 PROPAGATE_EXCEPTIONS = True
-SQLALCHEMY_DATABASE_URI = "postgresql://bckndlab_3_user:Qmsed6KCYRLtsAl9VVOoVWyYDoB3f3hr@dpg-cmmnth021fec73cmrscg-a.oregon-postgres.render.com/bckndlab_3"
+SQLALCHEMY_DATABASE_URI = "postgresql://backend_lab4_yr9s_user:ijz2IPUjPesoDrhVZwEYmQXmzL9Lo7cx@dpg-cmncud5a73kc73fjil3g-a.oregon-postgres.render.com/backend_lab4_yr9s"
 SQLALCHEMY_TRACK_MODIFICATIONS = False
