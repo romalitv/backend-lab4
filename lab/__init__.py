@@ -1,4 +1,5 @@
 import os
+import lab.jwtkey
 
 from flask import Flask
 from flask_migrate import Migrate
@@ -15,7 +16,6 @@ from .views.record import blp_record
 
 app = Flask(__name__)
 app.config.from_pyfile('config.py', silent=True)
-os.environ["JWT_SECRET_KEY"] = "30406769081763011340906003645223891474"
 app.config["JWT_SECRET_KEY"] = os.environ.get("JWT_SECRET_KEY")
 
 db.init_app(app)
