@@ -1,6 +1,7 @@
 import uuid
 
 from flask import jsonify, request, abort
+from flask_jwt_extended import jwt_required
 from flask_smorest import Blueprint
 from marshmallow import ValidationError
 from lab import CategoryModel, UserModel, db, RecordModel
@@ -11,6 +12,7 @@ blp_record = Blueprint('record', __name__, description="Record operations")
 record_schema = RecordSchema()
 
 @blp_record.post('/record')
+@jwt_required
 def create_record():
     record = request.json
     try:
@@ -37,6 +39,7 @@ def create_record():
     return record_schema.dump(record)
 
 @blp_record.get('/record/<record_id>')
+@jwt_required()
 def get_record(record_id):
     record = RecordModel.query.get(record_id)
     try:
@@ -45,6 +48,7 @@ def get_record(record_id):
         abort(400, e.message)
 
 @blp_record.delete('/record/<record_id>')
+@jwt_required()
 def delete_record(record_id):
     record = RecordModel.query.get(record_id)
     try:
@@ -57,6 +61,7 @@ def delete_record(record_id):
 
 
 @blp_record.get('/record')
+@jwt_required()
 def get_records():
     data = request.get_json()
     user_id = data.get('user_id', None)

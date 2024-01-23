@@ -46,13 +46,16 @@ def login_user():
 
 
 @blp_user.get('/users')
+@jwt_required()
 def get_users():
     data = user_schema.dump(UserModel.query.all(), many=True)
     return jsonify(data)
 
 
-@blp_user.get('/user/<user_id>')
-def get_user(user_id):
+@blp_user.get('/user')
+@jwt_required()
+def get_user():
+    user_id = get_jwt_identity()
     user = UserModel.query.get(user_id)
     try:
         return jsonify(user_schema.dump(user)), 200
@@ -60,8 +63,11 @@ def get_user(user_id):
        abort(400, "cannot find users")
 
 
-@blp_user.delete('/user/<user_id>')
-def delete_user(user_id):
+@blp_user.delete('/user')
+@jwt_required()
+def delete_user():
+    user_id = get_jwt_identity()
+    print("JWT Identity:", user_id)
     user = UserModel.query.get(user_id)
     try:
         db.session.delete(user)

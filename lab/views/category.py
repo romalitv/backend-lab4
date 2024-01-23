@@ -1,6 +1,7 @@
 import uuid
 
 from flask import jsonify, request, abort
+from flask_jwt_extended import jwt_required
 from flask_smorest import Blueprint
 from marshmallow import ValidationError
 from lab.models import db, CategoryModel, UserModel
@@ -11,6 +12,7 @@ category_schema = CategorySchema()
 
 
 @blp_category.post("/category")
+@jwt_required
 def create_category():
     category = request.json
 
@@ -44,6 +46,7 @@ def create_category():
     return category_schema.dump(category)
 
 @blp_category.get("/category")
+@jwt_required()
 def get_categories():
     user_id = request.args.get("user_id")
 
@@ -56,6 +59,7 @@ def get_categories():
     return jsonify(data)
 
 @blp_category.delete("/category/<category_id>")
+@jwt_required()
 def delete_category(category_id):
     category = CategoryModel.query.get(category_id)
     try:
