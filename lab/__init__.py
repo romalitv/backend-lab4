@@ -1,5 +1,5 @@
 import os
-import lab.jwtkey
+# import lab.jwtkey
 
 from flask import Flask
 from flask_migrate import Migrate
